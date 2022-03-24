@@ -1,8 +1,5 @@
-import { useState, useRef, useContext } from "react";
-
+import { useRef, useContext } from "react";
 import employeeDataContext from "../store/employeeDataStore.js";
-import { css, Button, Modal, Text } from "@nextui-org/react";
-
 import classes from './Employees.module.css';
 
 function Employees() {

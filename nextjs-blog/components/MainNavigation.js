@@ -9,13 +9,19 @@ function MainNavigation() {
         <div className={classes.mainDiv}>
           <Avatar squared src="/avatars/logo.jpg" css={{ size: "$20" }} />
           <div className={classes.linkDiv}>
-            <Link href="/"><a><Button shadow color="gradient" auto>Home</Button></a></Link>
+            <Link href="/home"><a><Button shadow color="gradient" auto>Home</Button></a></Link>
           </div>
           <div className={classes.linkDiv}>
             <Link href="/account"><a><Button shadow color="gradient" auto>Account</Button></a></Link>
           </div>
           <div className={classes.linkDiv}>
             <Link href="/employees"><a><Button shadow color="gradient" auto>Employees</Button></a></Link>
+          </div>
+          <div className={classes.linkDiv}>
+            <Link href="/"><a><Button shadow color="gradient" auto>Login</Button></a></Link>
+          </div>
+          <div className={classes.linkDiv}>
+            <Link href="/signup"><a><Button shadow color="gradient" auto>Sign Up</Button></a></Link>
           </div>
           <div></div>
         </div>
