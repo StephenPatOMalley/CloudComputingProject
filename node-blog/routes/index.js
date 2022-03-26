@@ -70,17 +70,26 @@ router.post("/setEmployee", function (req, res, next) {
   res.end()
 });
 
-router.post("/setAccount", function (req, res, next) {
+router.post("/setAccount", async (req, res) => {
   console.log(req.body)
-  var data = new AccountModel(req.body)
-  data.save()
-  res.end()
+  try{
+    const user = await EmployeeModel.findOne({ name: req.body.name });
+    if(!user){
+      console.log("Invalid Username")
+      return res.status(401).send({ message: "Invalid Username or Password" });
+    }
+    var data = new AccountModel(req.body)
+    await data.save()
+    res.end()
+  }catch(error){
+    res.status(500).send({ message: "Internal Server Error" });
+    console.log("Internal Server Error")
+  }
 });
 
 router.post("/getEmployee", function (req, res, next) {
   EmployeeModel.find().then(function (docs) {
-    let theDoc = docs[docs.length-1]
-     console.log("/getEmployee: " + theDoc)
+      console.log("/getEmployee: " + docs)
      // theDoc = JSON.stringify(theDoc)
     res.status(200).json(theDoc)
   });
@@ -88,8 +97,7 @@ router.post("/getEmployee", function (req, res, next) {
 
 router.post("/getAccount", function (req, res, next) {
   AccountModel.find().then(function (docs) {
-    let theDoc = docs[docs.length-1]
-     console.log("/getAccount: " + theDoc)
+     console.log("/getAccount: " + docs)
      // theDoc = JSON.stringify(theDoc)
     res.status(200).json(theDoc)
   });
@@ -113,7 +121,7 @@ router.post("/getUser", async (req, res) => {
 			req.body.userPassword,
 			user.userPassword
 		);
-    
+
     console.log("Compare")
 
 		if (!validPassword){

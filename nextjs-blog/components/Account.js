@@ -1,8 +1,5 @@
-import { useState, useRef, useContext } from "react";
-
-import employeeDataContext from "../store/employeeDataStore.js";
+import { useRef, useContext } from "react";
 import accountDataContext from "../store/accountDataStore.js";
-
 import classes from './Account.module.css';
 
 function Account() {
