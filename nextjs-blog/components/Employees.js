@@ -1,36 +1,51 @@
-import { useRef, useContext } from "react";
-import employeeDataContext from "../store/employeeDataStore.js";
+import { useRef, useContext, useState } from "react";
+import EmployeeDataContext from "../store/employeeDataStore.js";
+import UserRegisterDataContext from "../store/userRegisterDataStore.js";
 import classes from './Employees.module.css';
 
-function Employees() {
-  const dataCtx = useContext(employeeDataContext);
+import "react-widgets/styles.css";
+import Combobox from "react-widgets/Combobox";
 
-  const employeeNameInputRef = useRef();
+function Employees() {
+  const dataEmployeeCtx = useContext(EmployeeDataContext)
+  const dataUserCtx = useContext(UserRegisterDataContext)
+  let userData = dataUserCtx.getUser()
+
   const employeeAgeInputRef = useRef();
   const employeeRoleInputRef = useRef();
 
+  const [value, setValue] = useState('')
 
   const submitHandler = (event) => {
     event.preventDefault();
 
-    const enteredemployeeName = employeeNameInputRef.current.value;
-    const enteredemployeeAge = employeeAgeInputRef.current.value;
-    const enteredemployeeRole = employeeRoleInputRef.current.value;
+    const enteredemployeeName = value.userName;
+    const enteredemployeeAge = employeeAgeInputRef.current.value
+    const enteredemployeeRole = employeeRoleInputRef.current.value
 
     const employeeData = {
-      name: enteredemployeeName,
-      age: enteredemployeeAge,
-      role: enteredemployeeRole,
+      userName: enteredemployeeName,
+      userAge: enteredemployeeAge,
+      userRole: enteredemployeeRole,
     };
 
-    dataCtx.setEmployee(employeeData)
+    dataEmployeeCtx.setEmployee(employeeData)
   }
 
+  // https://www.npmjs.com/package/react-dropdown-select
   return (
     <form className={classes.form} onSubmit={submitHandler}>
       <div className={classes.control}>
         <label htmlFor='employee name'>Employee Name</label>
-        <input type='text' required id='employeeName' ref={employeeNameInputRef} />
+        <Combobox
+          placeholder= "Select Employee"
+          data = {userData}
+          textField='userName'
+          type = 'text'
+          required id= 'employeeName'
+          value={value}
+          onChange = {value => setValue(value)}
+        />
       </div>
       <div className={classes.control}>
         <label htmlFor='employee age'>Employee Age</label>

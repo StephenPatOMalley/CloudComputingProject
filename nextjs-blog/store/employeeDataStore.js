@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect } from 'react';
 
 const initialEmployeeDataState = {
-    name: '',
-    age: 0,
-    role: ''
+    userName: '',
+    userAge: 0,
+    userRole: ''
 }
 
 const EmployeeDataContext = createContext(initialEmployeeDataState);

@@ -1,10 +1,10 @@
 import { useRef, useContext } from "react"
 import UserRegisterDataContext from "../store/userRegisterDataStore";
-import classes from './Login.module.css';
+import classes from './SignUp.module.css';
 
 
 function SignUp() {
-  const dataCtx = useContext(UserRegisterDataContext);
+  const dataCtx = useContext(UserRegisterDataContext)
 
   const nameRef = useRef()
   const emailRef = useRef()
@@ -12,11 +12,11 @@ function SignUp() {
 
 
   const submitHandler = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const enterednameRef = nameRef.current.value;
-    const enteredemailRef = emailRef.current.value;
-    const enteredpasswordRef = passwordRef.current.value;
+    const enterednameRef = nameRef.current.value
+    const enteredemailRef = emailRef.current.value
+    const enteredpasswordRef = passwordRef.current.value
 
     const userData = {
       userName: enterednameRef,
@@ -30,16 +30,16 @@ function SignUp() {
   return (
     <form className={classes.form} onSubmit={submitHandler}>
       <div className={classes.control}>
-        <label htmlFor='User Name'>User Name</label>
-        <input type='text' required id='userName' ref={nameRef} />
+        <label htmlFor='Employee Name'>Employee Name</label>
+        <input type='text' required id='employeeName' ref={nameRef} />
       </div>
       <div className={classes.control}>
-        <label htmlFor='User Email'>User Email</label>
-        <input type='email' required id='userEmail' ref={emailRef} />
+        <label htmlFor='Employee Email'>Employee Email</label>
+        <input type='email' required id='employeeEmail' ref={emailRef} />
       </div>
       <div className={classes.control}>
-        <label htmlFor='User Password'>User Password</label>
-        <input type='password' required id='userPassword' ref={passwordRef} />
+        <label htmlFor='Employee Password'>Employee Password</label>
+        <input type='password' required id='employeePassword' ref={passwordRef} />
       </div>
       <div className={classes.actions}>
         <button>Sign Up</button>

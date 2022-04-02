@@ -1,8 +1,8 @@
 import { createContext, useState, useEffect } from 'react';
 
 const initialAccountDataState = {
-    name: '',
-    salary: 0
+    userName: '',
+    userSalary: 0
 }
 
 const AccountDataContext = createContext(initialAccountDataState);

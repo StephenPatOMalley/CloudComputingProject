@@ -4,12 +4,10 @@ import { NextUIProvider } from "@nextui-org/react";
 import { EmpDataContextProvider } from "../store/employeeDataStore";
 import { AccDataContextProvider } from "../store/accountDataStore";
 import { UserRegisterDataContextProvider } from "../store/userRegisterDataStore";
-import { UserLoginDataContextProvider } from "../store/userLoginDataStore";
 
 function MyApp({ Component, pageProps }) {
   return (
     <NextUIProvider>
-      <UserLoginDataContextProvider>
         <UserRegisterDataContextProvider>
           <EmpDataContextProvider>
             <AccDataContextProvider>
@@ -19,7 +17,6 @@ function MyApp({ Component, pageProps }) {
             </AccDataContextProvider>
           </EmpDataContextProvider>
         </UserRegisterDataContextProvider>
-      </UserLoginDataContextProvider>
     </NextUIProvider>
   );
 }

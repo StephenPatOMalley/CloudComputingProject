@@ -1,22 +1,29 @@
-import { useRef, useContext } from "react";
+import { useRef, useContext, useState } from "react";
 import accountDataContext from "../store/accountDataStore.js";
+import UserRegisterDataContext from "../store/userRegisterDataStore.js";
 import classes from './Account.module.css';
 
-function Account() {
-  const dataCtx = useContext(accountDataContext);
+import "react-widgets/styles.css";
+import Combobox from "react-widgets/Combobox";
 
-  const accountNameInputRef = useRef();
-  const accountSalaryInputRef = useRef();
+function Account() {
+  const dataCtx = useContext(accountDataContext)
+  const dataUserCtx = useContext(UserRegisterDataContext)
+  let userData = dataUserCtx.getUser()
+
+  const accountSalaryInputRef = useRef()
+
+  const [value, setValue] = useState('')
 
   const submitHandler = (event) => {
     event.preventDefault();
 
-    const enteredaccountName = accountNameInputRef.current.value;
-    const enteredaccountSalary = accountSalaryInputRef.current.value;
+    const enteredaccountName = value.userName
+    const enteredaccountSalary = accountSalaryInputRef.current.value
 
     const accountData = {
-      name: enteredaccountName,
-      salary: enteredaccountSalary,
+      userName: enteredaccountName,
+      userSalary: enteredaccountSalary,
     };
 
     dataCtx.setAccount(accountData)
@@ -25,8 +32,16 @@ function Account() {
   return (
     <form className={classes.form} onSubmit={submitHandler}>
       <div className={classes.control}>
-        <label htmlFor='account name'>Employee Name</label>
-        <input type='text' required id='accountName' ref={accountNameInputRef} />
+        <label htmlFor='account name'>Account Name</label>
+        <Combobox
+          placeholder= "Select account"
+          data = {userData}
+          textField='userName'
+          type = 'text'
+          required id= 'accountName'
+          value={value}
+          onChange = {value => setValue(value)}
+        />
       </div>
       <div className={classes.control}>
         <label htmlFor='account Salary'>Employee Salary</label>

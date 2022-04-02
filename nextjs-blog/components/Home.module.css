@@ -1,45 +1,24 @@
-.form {
-  padding: 1rem;
-}
-
-.control {
-  margin-bottom: 0.5rem;
-}
-
-.control label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.control input,
-.control textarea {
-  display: block;
-  font: inherit;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  padding: 0.25rem;
+.splitScreen {
+  position: relative;
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.actions {
-  margin-top: 1rem;
-  text-align: right;
+.topPane {
+  width: '50%';
 }
 
-.actions button {
-  font: inherit;
-  cursor: pointer;
-  background-color: #77002e;
-  color: white;
-  padding: 0.5rem 1.5rem;
-  border: 1px solid #77002e;
-  border-radius: 4px;
-  font-weight: bold;
+.bottomPane {
+  width: '50%';
 }
 
-.actions button:hover,
-.actions button:active {
-  background-color: #a50e48;
-  border-color: #a50e48;
+.table {
+  border: 1px solid black;
+}
+
+.td {
+  border: 8px solid grey;
+  border-collapse: collapse;
+  text-align: center;
 }

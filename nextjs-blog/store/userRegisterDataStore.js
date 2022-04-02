@@ -9,6 +9,21 @@ const initialUserDataState = {
 const UserRegisterDataContext = createContext(initialUserDataState);
 
 export function UserRegisterDataContextProvider(props) {
+    const [dataUserObj, setDataUserObj] = useState(UserRegisterDataContext)
+
+    useEffect(() => {
+        fetch('api/getUserData')
+        .then((res) => res.json())
+        .then((data) => {
+            setDataUserObj(data)
+        })
+    }, []);
+
+    // see https://nextjs.org/docs/basic-features/data-fetching/client-side
+    function getUser() {
+        console.log(dataUserObj)
+        return dataUserObj
+    }
 
     async function setUser(data)  {
         const response = await fetch('api/setUserData', {
@@ -21,6 +36,7 @@ export function UserRegisterDataContextProvider(props) {
     }
 
     const context = {
+        getUser: getUser,
         setUser: setUser
     };
 

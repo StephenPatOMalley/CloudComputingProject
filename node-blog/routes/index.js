@@ -5,15 +5,14 @@ mongoose.connect("localhost:27017/EmployeeData");
 let Schema = mongoose.Schema;
 
 const Joi = require("joi");
-const jwt = require("jsonwebtoken");
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require("bcrypt");
 
 let employeeSchema = new Schema(
   {
-    name: String,
-    age: Number,
-    role: String,
+    userName: String,
+    userAge: Number,
+    userRole: String,
   },
   { collection: "employees" }
 );
@@ -21,8 +20,8 @@ let EmployeeModel = mongoose.model("employeeInfo", employeeSchema);
 
 let accountSchema = new Schema(
   {
-    name: String,
-    salary: Number,
+    userName: String,
+    userSalary: Number,
   },
   { collection: "accounts" }
 );
@@ -35,15 +34,8 @@ let userSchema = new Schema(
     userEmail: String,
     userPassword: String,
   },
-  { collection: "users" }
+  { collection: "userInfo" }
 );
-
-userSchema.methods.generateAuthToken = function () {
-  console.log("Token")
-	const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, {expiresIn: "7d",});
-  console.log(token)
-	return token;
-};
 
 let userModel = mongoose.model("userInfo", userSchema);
 
@@ -63,20 +55,30 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" })
 });
 
-router.post("/setEmployee", function (req, res, next) {
+router.post("/setEmployee", async (req, res) => {
   console.log(req.body)
-  var data = new EmployeeModel(req.body)
-  data.save()
-  res.end()
+  try{
+    const user = await EmployeeModel.findOne({ userName: req.body.userName });
+    if(user){
+      console.log("User Exists Username")
+      return res.status(401).send({ message: "User Exists Username" });
+    }
+    var data = new EmployeeModel(req.body)
+    await data.save()
+    res.end()
+  }catch(error){
+    res.status(500).send({ message: "Internal Server Error" });
+    console.log("Internal Server Error")
+  }
 });
 
 router.post("/setAccount", async (req, res) => {
   console.log(req.body)
   try{
-    const user = await EmployeeModel.findOne({ name: req.body.name });
-    if(!user){
-      console.log("Invalid Username")
-      return res.status(401).send({ message: "Invalid Username or Password" });
+    const user = await AccountModel.findOne({ userName: req.body.userName });
+    if(user){
+      console.log("User Exists Username")
+      return res.status(401).send({ message: "User Exists Username" });
     }
     var data = new AccountModel(req.body)
     await data.save()
@@ -90,61 +92,16 @@ router.post("/setAccount", async (req, res) => {
 router.post("/getEmployee", function (req, res, next) {
   EmployeeModel.find().then(function (docs) {
       console.log("/getEmployee: " + docs)
-     // theDoc = JSON.stringify(theDoc)
-    res.status(200).json(theDoc)
+    res.status(200).json(docs)
   });
 });
 
 router.post("/getAccount", function (req, res, next) {
   AccountModel.find().then(function (docs) {
      console.log("/getAccount: " + docs)
-     // theDoc = JSON.stringify(theDoc)
-    res.status(200).json(theDoc)
+    res.status(200).json(docs)
   });
 });
-
-router.post("/getUser", async (req, res) => {
-  console.log(req.body)
-	try {
-		const { error } = validateLogin(req.body);
-		if (error){
-      console.log(error)
-			return res.status(400).send({ message: error.details[0].message });
-    }
-
-		const user = await userModel.findOne({ userName: req.body.userName });
-		if (!user){
-      console.log("Invalid Username")
-			return res.status(401).send({ message: "Invalid Username or Password" });
-    }
-		const validPassword = await bcrypt.compare(
-			req.body.userPassword,
-			user.userPassword
-		);
-
-    console.log("Compare")
-
-		if (!validPassword){
-      console.log("Invalid Password")
-			return res.status(401).send({ message: "Invalid Username or Password" });
-    }
-		//const token = user.generateAuthToken();
-
-    console.log("Logging")
-		res.status(200).send({ message: "logged in successfully" });
-    console.log("Logged In")
-	} catch (error) {
-		res.status(500).send({ message: "Internal Server Error" });
-	}
-});
-
-const validateLogin = (data) => {
-	const schema = Joi.object({
-		userName: Joi.string().required().label("User Name"),
-		userPassword: Joi.string().required().label("User Password"),
-	});
-	return schema.validate(data);
-};
 
 router.post("/setUser", async (req, res) => {
   console.log(req.body)
@@ -174,6 +131,13 @@ router.post("/setUser", async (req, res) => {
 		res.status(500).send({ message: "Internal Server Error" });
     console.log("Internal Server Error")
 	}
+});
+
+router.post("/getUser", function (req, res, next) {
+  userModel.find().then(function (docs) {
+     console.log("/getUser: " + docs)
+    res.status(200).json(docs)
+  });
 });
 
 module.exports = router;
